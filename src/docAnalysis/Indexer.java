@@ -28,6 +28,8 @@ public class Indexer {
 		File_Writer fw = new File_Writer("block"+blockNo);
 		index = new ArrayList<Map<String,PostList>>();
 		index.add(new HashMap<String, PostList>());
+		
+		// loop through the input file lines to build the index
 		String test = fr.nextLine();
 		DocID = 0;
 		while (test != null){
@@ -98,6 +100,7 @@ public class Indexer {
 	}
 	
 	public PostList mergePL(PostList A, PostList B){
+		// merge all post list in different hashmaps
 		if (A.isEmpty())
 			return new PostList(B);
 		else if (B.isEmpty())
