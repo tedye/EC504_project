@@ -9,11 +9,13 @@ import docAnalysis.PostList;
 
 public class Ranker {
 	private ArrayList<Integer> results;
+	public ArrayList<Integer> scores;
 	
 	public Ranker(PostList docs){
 		Queue<DocNode> pqNode = new PriorityQueue<DocNode>(10, new DocNodeComp());
 		DocNode temp = docs.head;
 		results = new ArrayList<Integer>();
+		scores = new ArrayList<Integer>();
 		while(temp != null){
 			pqNode.add(temp);
 			temp = temp.next;
@@ -23,6 +25,7 @@ public class Ranker {
 		int cnt = 0;
 		while (temp != null && cnt < 10){
 			results.add(temp.DocID);
+			scores.add(temp.count);
 			temp = pqNode.poll();
 			cnt++;
 		}

@@ -10,11 +10,11 @@ import docAnalysis.PostList;
 public class FTQuery {
 	private int matchSize;
 	private ArrayList<Integer> resultDocIDs;
+	public ArrayList<Integer> scores;
 	
 	public FTQuery(ArrayList<String> terms, Indexer idx){
 
 		Queue<PostList> plq = new PriorityQueue<PostList>(10, new PostListLengthComp());
-		resultDocIDs = new ArrayList<Integer>();
 		int cnt = 0;
 		matchSize = 0;
 		PostList temp,temp1;
@@ -36,7 +36,7 @@ public class FTQuery {
 			if (matchSize > 1){
 				temp = plq.poll();
 				temp1 = plq.poll();
-				while (temp != null && temp1 != null){
+				while (temp != null && temp1 != null && temp.Length > 10){
 					PostList temp2 = idx.intersection(temp, temp1);
 					if (temp2.isEmpty()){
 						temp1 = plq.poll();
@@ -50,7 +50,9 @@ public class FTQuery {
 				//for (Integer id : temp.getDocIDs()) resultDocIDs.add(id);
 				
 				//resultDocIDs = (new TF_IDF_Ranker(terms, resultDocIDs)).getResult();
-				resultDocIDs = (new Ranker(temp)).getResult();
+				Ranker rk = new Ranker(temp);
+				resultDocIDs = rk.getResult();
+				scores = rk.scores;
 			}
 		}
 		
